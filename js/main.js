@@ -38,82 +38,99 @@ $(function () {
 
     ***************************/
 
-    var accent = 'rgba(255, 152, 0, 1)';
+    var accent = '#0000FE';
     var dark = '#000';
     var light = '#fff';
 
-    /***************************
+  /***************************
+ Preloader (play once only)
+***************************/
 
-    preloader
-    
-    ***************************/
+const preloader = document.querySelector(".mil-preloader");
+const content = document.querySelectorAll(".mil-up");
 
-    var timeline = gsap.timeline();
+// If preloader already played, skip everything
+if (sessionStorage.getItem("preloaderPlayed")) {
+
+    // Hide preloader instantly
+    preloader.classList.add("mil-hidden");
+
+    // Show content instantly
+    gsap.set(content, {
+        opacity: 1,
+        y: 0,
+        scale: 1
+    });
+
+} else {
+
+    // Mark preloader as played
+    sessionStorage.setItem("preloaderPlayed", "true");
+
+    // Run animation only once
+    const timeline = gsap.timeline();
 
     timeline.to(".mil-preloader-animation", {
-        opacity: 1,
+        opacity: 1
     });
 
     timeline.fromTo(
-        ".mil-animation-1 .mil-h3", {
-            y: "30px",
-            opacity: 0
-        }, {
-            y: "0px",
-            opacity: 1,
-            stagger: 0.4
-        },
+        ".mil-animation-1 .mil-h3",
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.4 }
     );
 
     timeline.to(".mil-animation-1 .mil-h3", {
         opacity: 0,
-        y: '-30',
+        y: -30
     }, "+=.3");
 
-    timeline.fromTo(".mil-reveal-box", 0.1, {
-        opacity: 0,
-    }, {
-        opacity: 1,
-        x: '-30',
-    });
+    timeline.fromTo(".mil-reveal-box",
+        { opacity: 0 },
+        { opacity: 1, x: -30, duration: 0.1 }
+    );
 
-    timeline.to(".mil-reveal-box", 0.45, {
+    timeline.to(".mil-reveal-box", {
         width: "100%",
         x: 0,
+        duration: 0.45
     }, "+=.1");
-    timeline.to(".mil-reveal-box", {
-        right: "0"
-    });
-    timeline.to(".mil-reveal-box", 0.3, {
-        width: "0%"
-    });
-    timeline.fromTo(".mil-animation-2 .mil-h3", {
-        opacity: 0,
-    }, {
-        opacity: 1,
-    }, "-=.5");
-    timeline.to(".mil-animation-2 .mil-h3", 0.6, {
-        opacity: 0,
-        y: '-30'
-    }, "+=.5");
-    timeline.to(".mil-preloader", 0.8, {
-        opacity: 0,
-        ease: 'sine',
-    }, "+=.2");
-    timeline.fromTo(".mil-up", 0.8, {
-        opacity: 0,
-        y: 40,
-        scale: .98,
-        ease: 'sine',
 
-    }, {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        onComplete: function () {
-            $('.mil-preloader').addClass("mil-hidden");
+    timeline.to(".mil-reveal-box", { right: "0" });
+    timeline.to(".mil-reveal-box", { width: "0%", duration: 0.3 });
+
+    timeline.fromTo(".mil-animation-2 .mil-h3",
+        { opacity: 0 },
+        { opacity: 1 },
+        "-=.5"
+    );
+
+    timeline.to(".mil-animation-2 .mil-h3", {
+        opacity: 0,
+        y: -30,
+        duration: 0.6
+    }, "+=.5");
+
+    timeline.to(".mil-preloader", {
+        opacity: 0,
+        duration: 0.8,
+        ease: "sine"
+    }, "+=.2");
+
+    timeline.fromTo(".mil-up",
+        { opacity: 0, y: 40, scale: 0.98 },
+        {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: "sine",
+            onComplete: () => preloader.classList.add("mil-hidden")
         },
-    }, "-=1");
+        "-=1"
+    );
+}
+
     /***************************
 
     anchor scroll
