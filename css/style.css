@@ -589,13 +589,7 @@ button
   letter-spacing: 2px;
   font-size: 12px;
 
-  /* Adjusted gradient so black isn’t pure black — gives contrast */
-  background: linear-gradient(
-    135deg,
-    #000000 0%,
-    #000000 60%,
-    #0000FE 100%
-  );
+background-color: #0000FE;
 
   color: #fff;
   border-radius: 70px;
@@ -636,7 +630,7 @@ box-shadow:
   transition: 0.4s cubic-bezier(0, 0, 0.3642, 1);
 }
 .mil-button svg path {
-  fill: #0000FE;
+  fill: #ffffff;
 }
 .mil-button.mil-icon-button {
   padding: 15px;
