@@ -1080,3 +1080,71 @@ faqItems.forEach(item => {
     if (!open) item.classList.add("active");
   });
 });
+
+
+//New Additions (Glen)
+const statsSection = document.querySelector(".stats-section");
+const cards = document.querySelectorAll(".stat-card");
+const numbers = document.querySelectorAll(".stat-number");
+
+let animated = false;
+
+const animateCards = () => {
+  cards.forEach((card, index) => {
+    card.style.opacity = "0";
+    card.style.transform = "translateY(20px)";
+
+    setTimeout(() => {
+      card.style.transition = "all 0.6s ease";
+      card.style.opacity = "1";
+      card.style.transform = "translateY(0)";
+    }, index * 200);
+  });
+};
+
+const countUpNumbers = () => {
+  numbers.forEach((num) => {
+    const target = +num.dataset.target;
+    let current = 0;
+
+    const increment = Math.max(1, Math.floor(target / 60));
+
+    const update = () => {
+      current += increment;
+
+      if (current >= target) {
+        num.textContent = target + "+";
+      } else {
+        num.textContent = current + "+";
+        requestAnimationFrame(update);
+      }
+    };
+
+    update();
+  });
+};
+
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !animated) {
+        animated = true;
+        animateCards();
+        countUpNumbers();
+        observer.disconnect();
+      }
+    });
+  },
+  {
+    threshold: 0.4, // triggers when section is clearly visible
+  }
+);
+
+observer.observe(statsSection);
+
+
+document.querySelectorAll('.cta-service-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('active');
+  });
+});
